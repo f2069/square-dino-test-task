@@ -1,0 +1,16 @@
+{
+    "name": "Components",
+    "rootNamespace": "SquareDinoTestTask",
+    "references": [
+        "GUID:fc69abb88f9fa174b93c64b305a8a7d3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
