@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using SquareDinoTestTask.Core.Interfaces;
+using UnityEngine;
 
 namespace SquareDinoTestTask.Components {
-    public class RagdollActivator : MonoBehaviour {
+    public class RagdollActivator : MonoBehaviour, IRagdollActivator {
         [SerializeField] private Animator animator;
         [SerializeField] private Transform ragdollRoot;
         [SerializeField] private bool ragdoolAwake;
@@ -14,20 +15,11 @@ namespace SquareDinoTestTask.Components {
             _joints = ragdollRoot.GetComponentsInChildren<CharacterJoint>();
         }
 
+        // @todo remove this ?
         private void Start()
             => SwitchRagdoll(ragdoolAwake);
 
-        [ContextMenu("EnableRagdoll")]
-        public void EnableRagdoll() {
-            SwitchRagdoll(true);
-        }
-
-        [ContextMenu("EnableAnimator")]
-        public void EnableAnimator() {
-            SwitchRagdoll(false);
-        }
-
-        private void SwitchRagdoll(bool ragdollState) {
+        public void SwitchRagdoll(bool ragdollState) {
             animator.enabled = !ragdollState;
 
             foreach (var joint in _joints) {
@@ -35,9 +27,16 @@ namespace SquareDinoTestTask.Components {
             }
 
             foreach (var modelRigidbody in _rigidbodies) {
-                modelRigidbody.isKinematic = !ragdollState;
-                modelRigidbody.velocity = ragdollState ? Vector3.zero : modelRigidbody.velocity;
+                if (ragdollState) {
+                    modelRigidbody.isKinematic = false;
+                    modelRigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+                } else {
+                    modelRigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                    modelRigidbody.isKinematic = true;
+                }
+
                 modelRigidbody.useGravity = ragdollState;
+                modelRigidbody.velocity = ragdollState ? Vector3.zero : modelRigidbody.velocity;
             }
         }
     }

@@ -131,6 +131,9 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 384
   damageValue: 1
   lifeTime: 3
 --- !u!136 &4529078075481074052

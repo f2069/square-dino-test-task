@@ -3,7 +3,8 @@
     "rootNamespace": "SquareDinoTestTask",
     "references": [
         "GUID:fc69abb88f9fa174b93c64b305a8a7d3",
-        "GUID:6bdd2192fad8d4b4ca864c85f907638d"
+        "GUID:6bdd2192fad8d4b4ca864c85f907638d",
+        "GUID:7361ba9baa1a2614da028cbe8c18fbe8"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -7,9 +7,17 @@ namespace SquareDinoTestTask.Components {
     public class HealthComponent : MonoBehaviour, IDamageable {
         [SerializeField] private float healthPoint = 5f;
 
+        public float MaxHealth => _maxHealth;
+
         private event IDamageable.OnDead OnDeadEvent;
+        private event IDamageable.OnHpChange OnHpChangeEvent;
 
         private bool _isDead;
+        private float _maxHealth;
+
+        private void Start() {
+            _maxHealth = healthPoint;
+        }
 
         public void TakeDamage(float damageValue) {
             if (_isDead) {
@@ -17,6 +25,7 @@ namespace SquareDinoTestTask.Components {
             }
 
             healthPoint = Math.Max(0, healthPoint - damageValue);
+            OnHpChangeEvent?.Invoke(healthPoint);
 
             if (healthPoint != 0) {
                 return;
@@ -31,6 +40,12 @@ namespace SquareDinoTestTask.Components {
             OnDeadEvent += call;
 
             return new ActionDisposable(() => { OnDeadEvent -= call; });
+        }
+
+        public IDisposable SubscribeOnHpChange(IDamageable.OnHpChange call) {
+            OnHpChangeEvent += call;
+
+            return new ActionDisposable(() => { OnHpChangeEvent -= call; });
         }
     }
 }

@@ -4,18 +4,21 @@ using SquareDinoTestTask.Core.Interfaces;
 using UnityEngine;
 
 namespace SquareDinoTestTask.View.Weapons {
-    public class BulletView : MonoBehaviour {
+    [RequireComponent(typeof(Collider))]
+    public class BulletView : MonoBehaviour, IBulletView {
         [SerializeField] private float speed = 5f;
         [SerializeField] private LayerMask targetLayers;
+        [SerializeField] private LayerMask ignoreLayers;
         [SerializeField] private float damageValue = 1f;
         [SerializeField] protected float lifeTime = 3f;
 
         private Collider _collider;
-        private Vector3 _direction = Vector3.zero;
         private Coroutine _coroutine;
+        private Transform _currentTransform;
 
         private void Awake() {
             _collider = GetComponent<Collider>();
+            _currentTransform = transform;
         }
 
         private void Start() {
@@ -23,7 +26,7 @@ namespace SquareDinoTestTask.View.Weapons {
         }
 
         private void Update() {
-            transform.Translate(_direction * speed * Time.deltaTime);
+            _currentTransform.position += _currentTransform.forward * speed * Time.deltaTime;
         }
 
         private IEnumerator SelfDestroy() {
@@ -33,8 +36,11 @@ namespace SquareDinoTestTask.View.Weapons {
             Destroy(gameObject);
         }
 
-        public void SetDirection(Vector3 direction)
-            => _direction = direction.normalized;
+        public void SetDirection(Vector3 direction) {
+            direction.Normalize();
+
+            transform.LookAt(transform.position + direction, Vector3.up);
+        }
 
         private void TryStopCoroutine() {
             if (_coroutine == null) {
@@ -46,17 +52,20 @@ namespace SquareDinoTestTask.View.Weapons {
         }
 
         private void OnTriggerEnter(Collider other) {
-            if (!other.gameObject.IsInLayer(targetLayers)) {
-                return;
-            }
-
-            var healthComponent = other.GetComponent<IDamageable>() ?? other.GetComponentInParent<IDamageable>();
-            if (healthComponent == null) {
+            if (other.gameObject.IsInLayer(ignoreLayers)) {
                 return;
             }
 
             _collider.enabled = false;
-            healthComponent.TakeDamage(damageValue);
+            TryStopCoroutine();
+
+            if (other.gameObject.IsInLayer(targetLayers)) {
+                var healthComponent = other.GetComponent<IDamageable>() ?? other.GetComponentInParent<IDamageable>();
+                healthComponent?.TakeDamage(damageValue);
+            }
+
+            // @todo pool
+            Destroy(gameObject);
         }
     }
 }

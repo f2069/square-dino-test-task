@@ -1,10 +1,12 @@
 ﻿using SquareDinoTestTask.Core.Disposables;
+using SquareDinoTestTask.Core.Interfaces;
 using SquareDinoTestTask.Core.Utils;
 using SquareDinoTestTask.UserInput;
 using SquareDinoTestTask.View.Weapons;
 using UnityEngine;
 
 namespace SquareDinoTestTask.View.Armory {
+    [RequireComponent(typeof(UserInputHandler))]
     public class BulletWeaponView : MonoBehaviour {
         [SerializeField] private float cooldown = .3f;
         [SerializeField] private Transform spawnPosition;
@@ -13,29 +15,62 @@ namespace SquareDinoTestTask.View.Armory {
         private readonly CompositeDisposable _trash = new CompositeDisposable();
         private UserInputHandler _userInput;
         private Cooldown _shotCooldown;
+        private Camera _camera;
 
         private void Awake() {
+            _camera = Camera.main;
             _userInput = GetComponent<UserInputHandler>();
 
             _shotCooldown = new Cooldown(cooldown);
 
-            _userInput.SubscribeOnClick(OnPointerClick);
+            _trash.Retain(_userInput.SubscribeOnClick(OnPointerClick));
         }
 
         private void OnDestroy()
             => _trash.Dispose();
 
-        private void OnPointerClick(Vector2 pointerposition) {
+        private void OnPointerClick(Vector2 pointerPosition) {
             if (!_shotCooldown.IsReady) {
                 return;
             }
 
-            var bulletGo = SpawnUtils.Instance.Spawn(bulletPrefab.transform, spawnPosition.position)
-                                     .GetComponent<BulletView>();
+            var shotDirection = GetShootDirection(pointerPosition);
+            if (shotDirection == Vector3.zero) {
+                return;
+            }
 
-            bulletGo.SetDirection(Vector3.forward);
+            var bulletGo = SpawnUtils.Instance.Spawn(bulletPrefab.transform, spawnPosition.position)
+                                     .GetComponent<IBulletView>();
+            bulletGo.SetDirection(shotDirection);
 
             _shotCooldown.Reset();
+        }
+
+        private Vector3 GetShootDirection(Vector2 mousePosition) {
+            var spawnerPosition = spawnPosition.position;
+
+            var clickRay = _camera.ScreenPointToRay(
+                new Vector3(
+                    mousePosition.x,
+                    mousePosition.y,
+                    100f
+                )
+            );
+
+            if (!Physics.Raycast(clickRay, out var clickRaycastHit, 100f)) {
+                return Vector3.zero;
+            }
+
+            var targetRay = new Ray(
+                spawnerPosition,
+                clickRaycastHit.point - spawnerPosition
+            );
+
+            if (Physics.Raycast(targetRay, out var targetRaycastHit)) {
+                return targetRaycastHit.point - spawnerPosition;
+            }
+
+            return Vector3.zero;
         }
     }
 }
