@@ -14,6 +14,9 @@ namespace SquareDinoTestTask.Components {
             _joints = ragdollRoot.GetComponentsInChildren<CharacterJoint>();
         }
 
+        private void Start()
+            => SwitchRagdoll(false);
+
         public void SwitchRagdoll(bool ragdollState) {
             animator.enabled = !ragdollState;
 
