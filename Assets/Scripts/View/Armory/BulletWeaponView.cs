@@ -1,7 +1,9 @@
 ﻿using SquareDinoTestTask.Core.Disposables;
 using SquareDinoTestTask.Core.Interfaces;
+using SquareDinoTestTask.Core.Interfaces.ObjectPool;
 using SquareDinoTestTask.Core.Utils;
 using SquareDinoTestTask.UserInput;
+using SquareDinoTestTask.View.Creatures;
 using SquareDinoTestTask.View.Utils.ObjectPool;
 using SquareDinoTestTask.View.Weapons;
 using UnityEngine;
@@ -18,9 +20,11 @@ namespace SquareDinoTestTask.View.Armory {
         private Cooldown _shotCooldown;
         private Camera _camera;
         private IPool _poolObjects;
+        private PlayerView _player;
 
         private void Awake() {
             _camera = Camera.main;
+            _player = GetComponent<PlayerView>();
             _userInput = GetComponent<UserInputHandler>();
 
             _shotCooldown = new Cooldown(cooldown);
@@ -33,8 +37,11 @@ namespace SquareDinoTestTask.View.Armory {
         private void OnDestroy()
             => _trash.Dispose();
 
+        private bool CanShoot()
+            => _shotCooldown.IsReady && !_player.IsMoved && _player.CanShoot;
+
         private void OnPointerClick(Vector2 pointerPosition) {
-            if (!_shotCooldown.IsReady) {
+            if (!CanShoot()) {
                 return;
             }
 

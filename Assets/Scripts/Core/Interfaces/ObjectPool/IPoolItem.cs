@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SquareDinoTestTask.Core.Interfaces {
+namespace SquareDinoTestTask.Core.Interfaces.ObjectPool {
     public interface IPoolItem {
         public void SetPool(int id, IPool pool);
 

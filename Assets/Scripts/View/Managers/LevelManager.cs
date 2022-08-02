@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SquareDinoTestTask.Core.Disposables;
 using SquareDinoTestTask.Core.Utils;
 using SquareDinoTestTask.UserInput;
@@ -82,6 +81,10 @@ namespace SquareDinoTestTask.View.Managers {
             if (_currentPlatformIndex < platforms.Count - 1) {
                 _currentPlatformIndex += 1;
                 _currentPlatform = platforms[_currentPlatformIndex];
+            }
+
+            if (_currentPlatformIndex == 1) {
+                player.CanShoot = true;
             }
 
             if (_currentPlatformIndex == platforms.Count - 1) {

@@ -1,5 +1,4 @@
 ﻿using SquareDinoTestTask.Core.Dictionares;
-using SquareDinoTestTask.Core.Disposables;
 using SquareDinoTestTask.UserInput;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,7 +14,8 @@ namespace SquareDinoTestTask.View.Creatures {
         public bool IsMoved => _currentVelocity > .01f;
         public bool IsOnPosition => Vector3.Distance(transform.position, _destinationPoint) < .1f;
 
-        private readonly CompositeDisposable _trash = new CompositeDisposable();
+        public bool CanShoot { get; set; }
+
         private NavMeshAgent _navMeshAgent;
         private Vector3 _destinationPoint;
 
@@ -30,9 +30,6 @@ namespace SquareDinoTestTask.View.Creatures {
 
             animator.SetFloat(PlayerAnimatorConstants.HorizontalVelocityAnimationKey, _currentVelocity);
         }
-
-        private void OnDestroy()
-            => _trash.Dispose();
 
         public void MoveToPoint(Vector3 destinationPoint) {
             _destinationPoint = destinationPoint;

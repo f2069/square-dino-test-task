@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SquareDinoTestTask.Core.Interfaces;
+using SquareDinoTestTask.Core.Interfaces.ObjectPool;
 using SquareDinoTestTask.Core.Utils;
 using UnityEngine;
 

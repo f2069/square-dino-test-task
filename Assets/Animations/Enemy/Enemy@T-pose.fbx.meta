@@ -1,12 +1,20 @@
 fileFormatVersion: 2
-guid: 29ac72bf891c2c64d964d02ef052943e
+guid: 264afdf0f96e302498933977d74fd770
 ModelImporter:
   serializedVersion: 20300
   internalIDToNameTable:
   - first:
+      74: 1827226128182048838
+    second: T-pose
+  - first:
       74: -203655887218126122
-    second: Idle
-  externalObjects: {}
+    second: mixamo.com
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Character
+    second: {fileID: 2100000, guid: 2d9674097da42b2448220c5e2805bb27, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -21,7 +29,14 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Eyes' has translation animation that will
+      be discarded.\n\t'Eyes' has scale animation that will be discarded.\n\t'Eyebrows'
+      has translation animation that will be discarded.\n\t'Clavicle_L' has translation
+      animation that will be discarded.\n\t'Clavicle_R' has translation animation
+      that will be discarded.\n\t'UpperLeg_R' has translation animation that will
+      be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -35,18 +50,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Idle
+      name: T-pose
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 180
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -728,11 +743,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 264afdf0f96e302498933977d74fd770, type: 3}
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 2
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0

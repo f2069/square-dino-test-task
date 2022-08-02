@@ -1,3 +1,4 @@
+using SquareDinoTestTask.Core.Interfaces.ObjectPool;
 using UnityEngine;
 
 namespace SquareDinoTestTask.Core.Interfaces {

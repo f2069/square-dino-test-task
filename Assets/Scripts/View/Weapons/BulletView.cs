@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using SquareDinoTestTask.Core.Extensions;
 using SquareDinoTestTask.Core.Interfaces;
+using SquareDinoTestTask.Core.Interfaces.ObjectPool;
 using UnityEngine;
 
 namespace SquareDinoTestTask.View.Weapons {
@@ -37,7 +38,7 @@ namespace SquareDinoTestTask.View.Weapons {
         public void SetDirection(Vector3 direction) {
             direction.Normalize();
 
-            transform.LookAt(transform.position + direction, Vector3.up);
+            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
         private void TryStopCoroutine() {
