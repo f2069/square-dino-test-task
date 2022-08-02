@@ -10,9 +10,8 @@ namespace SquareDinoTestTask.View.UI {
         private readonly CompositeDisposable _trash = new CompositeDisposable();
         private IDamageable _healthComponent;
 
-        private void Start() {
+        private void Awake() {
             _healthComponent = GetComponentInParent<IDamageable>();
-
             if (_healthComponent == null) {
                 return;
             }
