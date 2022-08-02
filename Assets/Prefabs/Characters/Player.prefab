@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef98ea371ed2420a985cd62721736ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 5926475725918269539}
 --- !u!114 &5926475726176486272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69cc4aa3d004478ebc5a8d8420d464e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldown: 0.3
+  cooldown: 0.2
   spawnPosition: {fileID: 4374900740751255311}
   bulletPrefab: {fileID: 5928903330901753963, guid: 8ec64ad977aecbf42b3aca73a9edd469, type: 3}
 --- !u!1 &6616881186228601753

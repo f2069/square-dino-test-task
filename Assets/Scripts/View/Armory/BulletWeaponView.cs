@@ -2,6 +2,7 @@
 using SquareDinoTestTask.Core.Interfaces;
 using SquareDinoTestTask.Core.Utils;
 using SquareDinoTestTask.UserInput;
+using SquareDinoTestTask.View.Creatures;
 using SquareDinoTestTask.View.Weapons;
 using UnityEngine;
 
@@ -16,10 +17,12 @@ namespace SquareDinoTestTask.View.Armory {
         private UserInputHandler _userInput;
         private Cooldown _shotCooldown;
         private Camera _camera;
+        private PlayerView _player;
 
         private void Awake() {
             _camera = Camera.main;
             _userInput = GetComponent<UserInputHandler>();
+            _player = GetComponent<PlayerView>();
 
             _shotCooldown = new Cooldown(cooldown);
 

@@ -5,6 +5,7 @@ using SquareDinoTestTask.View.UI;
 using UnityEngine;
 
 namespace SquareDinoTestTask.View.Creatures {
+    [SelectionBase]
     [RequireComponent(
         typeof(HealthComponent),
         typeof(RagdollActivator),
@@ -20,12 +21,10 @@ namespace SquareDinoTestTask.View.Creatures {
             _healthComponent = GetComponent<IDamageable>();
             _uiController = GetComponent<IMobsUIController>();
             _ragdollActivator = GetComponent<IRagdollActivator>();
-
-            _trash.Retain(_healthComponent.SubscribeOnDead(OnCreatureDead));
         }
 
-        private void Start() {
-            // @todo
+        public void Activate() {
+            _trash.Retain(_healthComponent.SubscribeOnDead(OnCreatureDead));
             _uiController.ShowMobUi();
         }
 
