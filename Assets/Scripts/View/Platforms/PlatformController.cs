@@ -20,7 +20,7 @@ namespace SquareDinoTestTask.View.Platforms {
             => _enemiesCount == 0;
 
         private readonly CompositeDisposable _trash = new CompositeDisposable();
-        private List<EnemyView> _enemies = new List<EnemyView>();
+        private readonly List<EnemyView> _enemies = new List<EnemyView>();
 
         private int _enemiesCount;
 

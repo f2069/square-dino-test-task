@@ -17,14 +17,21 @@ namespace SquareDinoTestTask.View.Creatures {
         private IMobsUIController _uiController;
         private IRagdollActivator _ragdollActivator;
 
+        private bool _isDead;
+
         private void Awake() {
             _healthComponent = GetComponent<IDamageable>();
             _uiController = GetComponent<IMobsUIController>();
             _ragdollActivator = GetComponent<IRagdollActivator>();
+
+            _trash.Retain(_healthComponent.SubscribeOnDead(OnCreatureDead));
         }
 
         public void Activate() {
-            _trash.Retain(_healthComponent.SubscribeOnDead(OnCreatureDead));
+            if (_isDead) {
+                return;
+            }
+
             _uiController.ShowMobUi();
         }
 
@@ -32,6 +39,8 @@ namespace SquareDinoTestTask.View.Creatures {
             => _trash.Dispose();
 
         private void OnCreatureDead() {
+            _isDead = true;
+
             _uiController.HideMobUi();
             _ragdollActivator.SwitchRagdoll(true);
         }

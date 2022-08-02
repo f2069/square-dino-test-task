@@ -2,7 +2,7 @@
 using SquareDinoTestTask.Core.Interfaces;
 using SquareDinoTestTask.Core.Utils;
 using SquareDinoTestTask.UserInput;
-using SquareDinoTestTask.View.Creatures;
+using SquareDinoTestTask.View.Utils.ObjectPool;
 using SquareDinoTestTask.View.Weapons;
 using UnityEngine;
 
@@ -17,16 +17,17 @@ namespace SquareDinoTestTask.View.Armory {
         private UserInputHandler _userInput;
         private Cooldown _shotCooldown;
         private Camera _camera;
-        private PlayerView _player;
+        private IPool _poolObjects;
 
         private void Awake() {
             _camera = Camera.main;
             _userInput = GetComponent<UserInputHandler>();
-            _player = GetComponent<PlayerView>();
 
             _shotCooldown = new Cooldown(cooldown);
 
             _trash.Retain(_userInput.SubscribeOnClick(OnPointerClick));
+
+            _poolObjects = Pool.Instance;
         }
 
         private void OnDestroy()
@@ -42,8 +43,8 @@ namespace SquareDinoTestTask.View.Armory {
                 return;
             }
 
-            var bulletGo = SpawnUtils.Instance.Spawn(bulletPrefab.transform, spawnPosition.position)
-                                     .GetComponent<IBulletView>();
+            var bulletGo = _poolObjects.Get<IBulletView>(bulletPrefab.gameObject, spawnPosition.position);
+
             bulletGo.SetDirection(shotDirection);
 
             _shotCooldown.Reset();

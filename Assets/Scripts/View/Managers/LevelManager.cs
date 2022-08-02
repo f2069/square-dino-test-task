@@ -49,6 +49,8 @@ namespace SquareDinoTestTask.View.Managers {
         private void OnDestroy() {
             _platformsDisposable.Dispose();
             _trash.Dispose();
+
+            SpawnUtils.Instance.Dispose();
         }
 
         private void SubscribeOnPlatform() {
@@ -84,6 +86,12 @@ namespace SquareDinoTestTask.View.Managers {
 
             if (_currentPlatformIndex == platforms.Count - 1) {
                 _lastPlatform = true;
+            }
+
+            if (!_lastPlatform && _currentPlatform.IsEmpty) {
+                MoveToNextPlatform();
+
+                return;
             }
 
             SubscribeOnPlatform();

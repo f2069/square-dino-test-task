@@ -5,7 +5,6 @@ namespace SquareDinoTestTask.Components {
     public class RagdollActivator : MonoBehaviour, IRagdollActivator {
         [SerializeField] private Animator animator;
         [SerializeField] private Transform ragdollRoot;
-        [SerializeField] private bool ragdoolAwake;
 
         private Rigidbody[] _rigidbodies;
         private CharacterJoint[] _joints;
@@ -14,10 +13,6 @@ namespace SquareDinoTestTask.Components {
             _rigidbodies = ragdollRoot.GetComponentsInChildren<Rigidbody>();
             _joints = ragdollRoot.GetComponentsInChildren<CharacterJoint>();
         }
-
-        // @todo remove this ?
-        private void Start()
-            => SwitchRagdoll(ragdoolAwake);
 
         public void SwitchRagdoll(bool ragdollState) {
             animator.enabled = !ragdollState;

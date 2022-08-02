@@ -16,13 +16,12 @@ namespace SquareDinoTestTask.View.Weapons {
         private Coroutine _coroutine;
         private Transform _currentTransform;
 
+        private IPool _pool;
+        private int _poolId;
+
         private void Awake() {
             _collider = GetComponent<Collider>();
             _currentTransform = transform;
-        }
-
-        private void Start() {
-            _coroutine = StartCoroutine(SelfDestroy());
         }
 
         private void Update() {
@@ -32,8 +31,7 @@ namespace SquareDinoTestTask.View.Weapons {
         private IEnumerator SelfDestroy() {
             yield return new WaitForSeconds(lifeTime);
 
-            // @todo pool
-            Destroy(gameObject);
+            _pool.RetainInPool(_poolId, this);
         }
 
         public void SetDirection(Vector3 direction) {
@@ -56,16 +54,33 @@ namespace SquareDinoTestTask.View.Weapons {
                 return;
             }
 
-            _collider.enabled = false;
-            TryStopCoroutine();
+            _pool.RetainInPool(_poolId, this);
 
-            if (other.gameObject.IsInLayer(targetLayers)) {
-                var healthComponent = other.GetComponent<IDamageable>() ?? other.GetComponentInParent<IDamageable>();
-                healthComponent?.TakeDamage(damageValue);
+            if (!other.gameObject.IsInLayer(targetLayers)) {
+                return;
             }
 
-            // @todo pool
-            Destroy(gameObject);
+            var healthComponent = other.GetComponent<IDamageable>() ?? other.GetComponentInParent<IDamageable>();
+            healthComponent?.TakeDamage(damageValue);
+        }
+
+        public void SetPool(int id, IPool pool) {
+            _poolId = id;
+            _pool = pool;
+        }
+
+        public void ReleaseFromPool(Vector3 spawnPosition) {
+            transform.position = spawnPosition;
+
+            _collider.enabled = true;
+            gameObject.SetActive(true);
+            _coroutine = StartCoroutine(SelfDestroy());
+        }
+
+        public void RetainInPool() {
+            _collider.enabled = false;
+            TryStopCoroutine();
+            gameObject.SetActive(false);
         }
     }
 }
